@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="col-md-6 offset-md-3">
+  {% if user.is_authenticated %}
+
+  <h1>Hello World</h1>
+
+  {% else %}
+
+  {% include 'login_user.html' %}
+
+  {% endif %}
+</div>
+
+
+{% endblock %}

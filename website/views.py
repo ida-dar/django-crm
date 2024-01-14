@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignupForm
+from .models import Record
 
 
 def home(request):
+  records = Record.objects.all()
+
   if request.method == "POST":
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -18,7 +21,7 @@ def home(request):
       messages.error(request, "There was an error logging in. Please try again", extra_tags='danger')
       return redirect('home')
   else:
-    return render(request, 'home.html', {})
+    return render(request, 'home.html', {'records': records})
 
 
 def logout_user(request):
@@ -52,3 +55,13 @@ def register_user(request):
     return render(request, 'register.html', {'form': form})
 
   return render(request, 'register.html', {'form': form})
+
+
+def customer_record(request, pk):
+  if request.user.is_authenticated:
+    record = Record.objects.get(id=pk)
+    return render(request, 'customer_record.html', {'record': record})
+
+  else:
+    messages.error(request, "You must be logged in to view this page", extra_tags='danger')
+    return redirect('home')

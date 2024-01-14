@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="card bg-light mb-3">
+  <div class="card-header">
+    <strong>
+      {{ record.first_name }}
+      {{ record.last_name }}
+    </strong>
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+      <strong>ID: </strong>{{ record.id }}
+    </p>
+
+    <p class="card-text">
+      <strong>Create at: </strong>{{ record.created_at }}
+    </p>
+
+    <p class="card-text">
+      <strong>Email: </strong>{{ record.email }}
+    </p>
+
+    <p class="card-text">
+      <strong>Phone: </strong>{{ record.phone }}
+    </p>
+
+    <p class="card-text">
+      <strong>Address: </strong>{{ record.address }}
+    </p>
+
+    <p class="card-text">
+      <strong>City: </strong>{{ record.city }}
+    </p>
+
+    <p class="card-text">
+      <strong>State: </strong>{{ record.state }}
+    </p>
+
+    <p class="card-text">
+      <strong>Zipcode: </strong>{{ record.zipcode }}
+    </p>
+
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-2">
+    <a href="{% url 'home' %}" class="btn btn-secondary px-4">Return</a>
+  </div>
+  <div class="col-2">
+    <a href="{% url 'home' %}" class="btn btn-primary px-4">Edit</a>
+  </div>
+  <div class="col-2">
+    <a href="{% url 'home' %}" class="btn btn-danger px-4">Delete</a>
+  </div>
+</div>
+
+{% endblock %}

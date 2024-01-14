@@ -1,3 +1,5 @@
+# Needed only for db initialization. Left for future reference
+
 import os
 import mysql.connector
 from dotenv import load_dotenv

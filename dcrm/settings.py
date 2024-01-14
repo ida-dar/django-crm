@@ -21,6 +21,8 @@ MYSQL_USER = os.getenv('MYSQL_USER')
 MYSQL_PWD = os.getenv('MYSQL_PWD')
 MYSQL_PORT = os.getenv('MYSQL_PORT')
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -129,3 +131,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SMTP Configuration
+# less secure app in gmail settings needs to be turned on
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = str(os.getenv('EMAIL_USER'))
+EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))

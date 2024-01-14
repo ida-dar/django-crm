@@ -11,7 +11,15 @@ def home(request):
   if request.method == "POST":
     username = request.POST.get('username')
     password = request.POST.get('password')
+    remember_me = request.POST.get('remember_me')
+
     user = authenticate(request, username=username, password=password)
+
+    if remember_me is None:
+      # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
+      request.session.set_expiry(0)
+      # Set session as modified to force data updates/cookie to be saved.
+      request.session.modified = True
 
     if user is not None:
       login(request, user)

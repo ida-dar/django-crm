@@ -45,15 +45,15 @@
   </div>
 </div>
 
-<div class="row justify-content-center">
-  <div class="col-2">
-    <a href="{% url 'home' %}" class="btn btn-secondary px-4">Return</a>
+<div class="row justify-content-between">
+  <div class="col-md-3 col-sm-4 text-center">
+    <a href="{% url 'home' %}" class="btn btn-secondary px-4 my-1">Return</a>
   </div>
-  <div class="col-2">
-    <a href="{% url 'home' %}" class="btn btn-primary px-4">Edit</a>
+  <div class="col-md-3 col-sm-4 text-center">
+    <a href="{% url 'update_record' record.id %}" class="btn btn-primary px-4 my-1">Edit</a>
   </div>
-  <div class="col-2">
-    <a href="{% url 'home' %}" class="btn btn-danger px-4">Delete</a>
+  <div class="col-md-3 col-sm-4 text-center">
+    <a href="{% url 'delete_record' record.id %}" class="btn btn-danger px-4 my-1">Delete</a>
   </div>
 </div>
 

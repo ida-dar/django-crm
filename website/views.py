@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignupForm
+from .forms import SignupForm, AddRecordForm
 from .models import Record
 
 
@@ -64,4 +64,48 @@ def customer_record(request, pk):
 
   else:
     messages.error(request, "You must be logged in to view this page", extra_tags='danger')
+    return redirect('home')
+
+
+def add_record(request):
+  form = AddRecordForm(request.POST or None)
+  if request.user.is_authenticated:
+    if request.method == 'POST' and form.is_valid():
+      add_record = form.save()
+      messages.success(request, "Record added successful", extra_tags='success')
+      return redirect('home')
+    else:
+      return render(request, 'add_record.html', {'form': form})
+  else:
+    messages.error(request, "You must be logged to perform this action", extra_tags='danger')
+    return redirect('home')
+
+
+def update_record(request, pk):
+  if request.user.is_authenticated:
+    curr_record = Record.objects.get(id=pk)
+    form = AddRecordForm(request.POST or None, instance=curr_record)
+    if form.is_valid():
+      form.save()
+      messages.success(request, "Record updated successful", extra_tags='success')
+      return redirect('home')
+    return render(request, 'update_record.html', {'form': form})
+  else:
+    messages.error(request, "You must be logged to perform this action", extra_tags='danger')
+    return redirect('home')
+
+
+def delete_record(request, pk):
+  if request.user.is_authenticated:
+    record = Record.objects.get(id=pk)
+    record.delete()
+
+    if record is None:
+      messages.error(request, f"There was an error while deleting record with id: {pk}. Please try again",
+                     extra_tags='danger')
+    else:
+      messages.success(request, "Record deleted successfully", extra_tags='success')
+      return redirect('home')
+  else:
+    messages.error(request, "You must be logged to perform this action", extra_tags='danger')
     return redirect('home')

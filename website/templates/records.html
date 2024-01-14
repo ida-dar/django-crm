@@ -4,6 +4,7 @@
   <table class="table table-striped table-hover table-bordered">
     <thead class="table-dark">
     <tr>
+      <th scope="col"></th>
       <th scope="col">ID</th>
       <th scope="col">Created at</th>
       <th scope="col">First Name</th>
@@ -15,7 +16,8 @@
     {% for record in records %}
 
     <tr>
-      <th scope="row"><a href="{% url 'record' record.id %}">{{ record.id }}</a></th>
+      <th scope="row"><a href="{% url 'record' record.id %}">Update</a></th>
+      <th scope="row">{{ record.id }}</th>
       <td>{{ record.created_at }}</td>
       <td>{{ record.first_name }}</td>
       <td>{{ record.last_name }}</td>

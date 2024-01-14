@@ -4,12 +4,12 @@ from django import forms
 
 
 class SignupForm(UserCreationForm):
-  email = forms.EmailField(Label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+  email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
                            required=True)
-  first_name = forms.CharField(Label="", max_length=50, min_length=1,
+  first_name = forms.CharField(label="", max_length=50, min_length=1,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
                                required=True)
-  last_name = forms.CharField(Label="", max_length=50, min_length=1,
+  last_name = forms.CharField(label="", max_length=50, min_length=1,
                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
                               required=True)
 

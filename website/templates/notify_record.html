@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="col-md-6 offset-md-3">
+  <h2>Send email</h2>
+  <form method="POST" action="" id="notifyRecordForm">
+    {% csrf_token %}
+
+    <div class="form-group mb-3">
+       <p>Record's email: {{ record_email }}</p>
+      <input type="text" class="form-control" id="subject" name="subject"
+             placeholder="Subject" required>
+    </div>
+    <div class="form-group mb-3">
+      <textarea class="form-control" id='message' name="message" style="min-width: 100%" rows="5" required></textarea>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Send email</button>
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Return</a>
+
+  </form>
+</div>
+
+{% endblock %}

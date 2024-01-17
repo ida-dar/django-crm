@@ -1,3 +1,7 @@
+import os
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -73,6 +77,30 @@ def customer_record(request, pk):
   else:
     messages.error(request, "You must be logged in to view this page", extra_tags='danger')
     return redirect('home')
+
+
+def notify_record(request, pk):
+  record = Record.objects.filter(pk=pk).values()
+  record_email = record[0]['email']
+
+  if request.method == 'POST':
+    subject = request.POST.get('subject')
+    message = request.POST.get('message')
+
+    if record_email and subject and message:
+
+      send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[record_email, ],
+      )
+      messages.success(request, "Email sent successfully", extra_tags='success')
+      return redirect('home')
+    else:
+      messages.error(request, "There was an error. Please try again.", extra_tags='danger')
+  else:
+    return render(request, 'notify_record.html', {'record_email': record_email})
 
 
 def add_record(request):

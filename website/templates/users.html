@@ -1,0 +1,41 @@
+<h1>Users</h1>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col">ID</th>
+      <th scope="col">Created at</th>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+    {% for one_user in all_users %}
+
+    <tr>
+      <th scope="row"><a href="{% url 'notify_record' user.id %}">Send email</a></th>
+
+      <th scope="row">
+        {% if one_user.is_active == False %}
+        <a href="{% url 'approve_user' one_user.id %}">Approve</a>
+        {% else %}
+        Approved
+        {% endif %}
+      </th>
+
+      <th scope="row">{{ one_user.id }}</th>
+      <td>{{ one_user.date_joined }}</td>
+      <td>{{ one_user.username }}</td>
+      <td>{{ one_user.email }}</td>
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+  </table>
+</div>

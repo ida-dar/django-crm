@@ -6,6 +6,7 @@ urlpatterns = [
   path('', views.home, name='home'),
   path('logout/', views.logout_user, name='logout'),
   path('register/', views.register_user, name='register'),
+  path('approve_user/<int:pk>', views.approve_user, name='approve_user'),
 
   path('record/<int:pk>', views.customer_record, name='record'),  # pass primary key
   path('add_record', views.add_record, name='add_record'),

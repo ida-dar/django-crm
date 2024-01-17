@@ -11,6 +11,14 @@
 
   {% endif %}
 
+  <br/>
+
+  {% if all_users and user.is_superuser or user.is_staff %}
+
+  {% include 'users.html' %}
+
+  {% endif %}
+
   {% else %}
 
   {% include 'login_user.html' %}

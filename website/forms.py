@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Record
+from django.utils.safestring import SafeString
+
+from .models import Record, Service, Product, Order
 
 
 class SignupForm(UserCreationForm):
@@ -77,6 +79,87 @@ class AddRecordForm(forms.ModelForm):
                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Zipcode'}),
                             required=True)
 
+  def as_div(self):
+    return SafeString(super().as_div().replace("<div>", "<div class='col-md-6 col-sm-12'>"))
+
   class Meta:
     model = Record
     exclude = ("user",)
+
+
+class AddServiceForm(forms.ModelForm):
+  name = forms.CharField(label="", max_length=50, min_length=1,
+                         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+                         required=True)
+  price = forms.CharField(label="", max_length=50, min_length=1,
+                          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Price ($)'}),
+                          required=True)
+  description = forms.CharField(label="", max_length=2000,
+                                widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Provide service '
+                                                                                                     'description',
+                                                             'rows': '3'}),
+                                required=True)
+
+  def as_div(self):
+    return SafeString(super().as_div().replace("<div>", "<div class='col-12'>"))
+
+  class Meta:
+    model = Service
+    fields = (
+      'name',
+      'price',
+      'description',
+    )
+
+
+class AddProductForm(forms.ModelForm):
+  name = forms.CharField(label="", max_length=50, min_length=1,
+                         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+                         required=True)
+  price = forms.CharField(label="", max_length=50, min_length=1,
+                          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Price ($)'}),
+                          required=True)
+  amount = forms.CharField(label="", max_length=50, min_length=1,
+                           widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Amount'}),
+                           required=True)
+  description = forms.CharField(label="", max_length=2000,
+                                widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Provide service '
+                                                                                                     'description',
+                                                             'rows': '3'}),
+                                required=True)
+
+  def as_div(self):
+    return SafeString(super().as_div().replace("<div>", "<div class='col-12'>"))
+
+  class Meta:
+    model = Product
+    fields = (
+      'name',
+      'price',
+      'amount',
+      'description',
+    )
+
+
+class AddOrderForm(forms.ModelForm):
+  client_name = forms.CharField(label="",
+                                widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Client Name'}),
+                                )
+  activated_services = forms.CharField(label="",
+                                       widget=forms.Select(
+                                         attrs={'class': 'form-control', 'placeholder': 'Services'}),
+                                       )
+  ordered_products = forms.CharField(label="",
+                                     widget=forms.Select(
+                                       attrs={'class': 'form-control', 'placeholder': 'Products'}), )
+
+  def as_div(self):
+    return SafeString(super().as_div().replace("<div>", "<div class='col-12'>"))
+
+  class Meta:
+    model = Order
+    fields = (
+      'client_name',
+      'activated_services',
+      'ordered_products',
+    )

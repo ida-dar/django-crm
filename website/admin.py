@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import Record
+from .models import Record, Product, Service
 
-admin.site.register(Record)
+models = [Record, Product, Service]
+
+admin.site.register(models)

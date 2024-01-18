@@ -4,25 +4,23 @@
 
 <div class="col-md-12">
   {% if user.is_authenticated %}
-
-  {% if records %}
-
-  {% include 'records.html' %}
-
-  {% endif %}
+    <br/>
+    <div class="card my-3 mx-auto" style="width: 48rem">
+      <div class="card-body">
+        <h5 class="card-title">Django CRM Home Page</h5>
+        <p class="card-text">In navbar under <i>Lists</i> dropdown you will find the lists of clients, product and services that we offer</p>
+        <p class="card-text">In navbar under <i>Actions</i> dropdown you will find the actions you may perform on the lists mentioned above (ADMIN access needed)</p>
+      </div>
+    </div>
 
   <br/>
 
-  {% if all_users and user.is_superuser or user.is_staff %}
-
-  {% include 'users.html' %}
-
-  {% endif %}
+    {% if all_users and user.is_superuser or user.is_staff %}
+      {% include 'users.html' %}
+    {% endif %}
 
   {% else %}
-
-  {% include 'login_user.html' %}
-
+    {% include 'login_user.html' %}
   {% endif %}
 </div>
 

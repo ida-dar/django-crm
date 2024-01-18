@@ -2,17 +2,30 @@
 {% block body %}
 
 <div class="col-md-6 offset-md-3">
-  <h1>Add Record</h1>
+  <h1>Add
+    {% if view_name == 'client' %}
+      Client
+    {% elif view_name == 'service' %}
+      Service
+    {% elif view_name == 'product' %}
+      Product
+    {% endif %}
+  </h1>
   <br/>
 
-  <form method="POST" action="{% url 'add_record' %}">
+  <form method="POST" action="{% url 'add_record' view_name %}">
     {% csrf_token %}
 
-    {{ form.as_p }}
+    <div class="row g-3">
+      {{ form.as_div }}
+    </div>
 
     <br/>
-    <button type="submit" class="btn btn-primary">Add Record</button>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Return</a>
+    <div>
+      <button type="submit" class="btn btn-primary mx-3">Add</button>
+      <a href="{% url 'home' %}" class="btn btn-secondary mx-3">Return</a>
+    </div>
+
 
   </form>
 

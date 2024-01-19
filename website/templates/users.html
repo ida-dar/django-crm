@@ -34,7 +34,6 @@
       <td>{{ one_user.username }}</td>
       <td>{{ one_user.email }}</td>
       <td class="text-center">
-        <a href="{% url 'delete_user' one_user.id %}" class="btn btn-primary px-4 my-1">Edit</a>
         <a href="{% url 'delete_user' one_user.id %}" class="btn btn-danger px-4 my-1">Delete</a>
       </td>
     </tr>

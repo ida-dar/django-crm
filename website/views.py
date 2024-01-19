@@ -1,6 +1,4 @@
 from django.conf import settings
-from django.db.models import QuerySet
-from django.http import HttpResponseRedirect
 from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,15 +9,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import SignupForm, AddRecordForm, AddServiceForm, AddProductForm, AddOrderForm
-from .models import Record, Product, Service
+from .models import Record, Product, Service, Order
 
 UserModel = get_user_model()
 
 
 def home(request):
   all_users = UserModel.objects.values()
-
-  print(all_users)
 
   if request.method == "POST":
     username = request.POST.get('username')
@@ -40,7 +36,7 @@ def home(request):
     else:
       messages.error(request, "There was an error logging in. Please try again", extra_tags='danger')
 
-    return HttpResponseRedirect('')
+    return redirect('home')
   else:
     return render(request, 'home.html', {'all_users': all_users})
 
@@ -52,7 +48,7 @@ def clients(request):
     return render(request, 'clients.html', {'clients': all_client})
   else:
     messages.error(request, "You must be logged in to view this page", extra_tags='danger')
-    return HttpResponseRedirect('')
+    return redirect('home')
 
 
 def services(request):
@@ -62,19 +58,27 @@ def services(request):
     return render(request, 'services.html', {'services': all_services})
   else:
     messages.error(request, "You must be logged in to view this page", extra_tags='danger')
-    return HttpResponseRedirect('')
+    return redirect('home')
 
 
 def products(request):
   all_products = Product.objects.all()
 
-  print(all_products)
-
   if request.user.is_authenticated:
     return render(request, 'products.html', {'products': all_products})
   else:
     messages.error(request, "You must be logged in to view this page", extra_tags='danger')
-    return HttpResponseRedirect('')
+    return redirect('home')
+
+
+def orders(request):
+  all_orders = Order.objects.all()
+
+  if request.user.is_authenticated:
+    return render(request, 'orders.html', {'orders': all_orders})
+  else:
+    messages.error(request, "You must be logged in to view this page", extra_tags='danger')
+    return redirect('home')
 
 
 def logout_user(request):
@@ -88,16 +92,15 @@ def logout_user(request):
 
 
 def delete_user(request, pk):
-  user = User.objects.get(pk=pk)
-  print(user)
-  user.delete()
+  user = UserModel.objects.get(pk=pk)
+  deleted = user.delete()
 
-  if user is None:
+  if deleted:
     messages.success(request, "User activated successfully", extra_tags='success')
   else:
     messages.error(request, "There was an error. Please try again", extra_tags='danger')
 
-  return HttpResponseRedirect('')
+  return redirect('home')
 
 
 @receiver(pre_save, sender=User)
@@ -154,7 +157,7 @@ def customer_record(request, pk):
 
   else:
     messages.error(request, "You must be logged in to view this page", extra_tags='danger')
-    return HttpResponseRedirect('')
+    return redirect('home')
 
 
 def order_for_client(request):
@@ -208,14 +211,14 @@ def add_record(request, view_name):
 
   if request.user.is_authenticated:
     if request.method == 'POST' and form.is_valid():
-      add_record = form.save()
+      form.save()
       messages.success(request, "Record added successful", extra_tags='success')
       return redirect(f'{view_name}s')
     else:
       return render(request, 'add_record.html', {'form': form, 'view_name': view_name})
   else:
     messages.error(request, "You must be logged to perform this action", extra_tags='danger')
-    return HttpResponseRedirect('')
+    return redirect('home')
 
 
 @login_required
@@ -240,7 +243,7 @@ def update_record(request, view_name, pk):
     return render(request, 'update_record.html', {'form': form, 'view_name': view_name})
   else:
     messages.error(request, "You must be logged to perform this action", extra_tags='danger')
-    return HttpResponseRedirect('')
+    return redirect('home')
 
 
 @login_required
@@ -252,8 +255,6 @@ def delete_record(request, view_name, pk):
   }
 
   model = model_mapping.get(view_name)
-
-  print(model, view_name)
 
   if model:
     del_record = get_object_or_404(model, id=pk)

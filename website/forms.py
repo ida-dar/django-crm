@@ -84,7 +84,7 @@ class AddRecordForm(forms.ModelForm):
 
   class Meta:
     model = Record
-    exclude = ("user",)
+    exclude = ("user", "activated_services")
 
 
 class AddServiceForm(forms.ModelForm):
@@ -142,19 +142,36 @@ class AddProductForm(forms.ModelForm):
 
 
 class AddOrderForm(forms.ModelForm):
-  client_name = forms.CharField(label="",
-                                widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Client Name'}),
-                                )
-  activated_services = forms.CharField(label="",
-                                       widget=forms.Select(
-                                         attrs={'class': 'form-control', 'placeholder': 'Services'}),
-                                       )
-  ordered_products = forms.CharField(label="",
-                                     widget=forms.Select(
-                                       attrs={'class': 'form-control', 'placeholder': 'Products'}), )
+  client_name = forms.ModelChoiceField(queryset=Record.objects.all(),
+                                       widget=forms.Select(attrs={'class': 'form-control'}),
+                                       required=True,
+                                       ),
+  activated_services = forms.ModelChoiceField(queryset=Service.objects.all(),
+                                              widget=forms.Select(attrs={'class': 'form-control'}),
+                                              required=True,
+                                              ),
+  ordered_products = forms.ModelChoiceField(queryset=Product.objects.all(),
+                                            widget=forms.Select(attrs={'class': 'form-control'}),
+                                            required=True,
+                                            ),
 
   def as_div(self):
     return SafeString(super().as_div().replace("<div>", "<div class='col-12'>"))
+
+  def __init__(self, *args, **kwargs):
+    super(AddOrderForm, self).__init__(*args, **kwargs)
+
+    self.fields['client_name'].widget.attrs['class'] = 'form-select my-3'
+    self.fields['client_name'].widget.attrs['placeholder'] = 'Client'
+    self.fields['client_name'].label = ''
+
+    self.fields['activated_services'].widget.attrs['class'] = 'form-select my-3'
+    self.fields['activated_services'].widget.attrs['placeholder'] = 'Services'
+    self.fields['activated_services'].label = ''
+
+    self.fields['ordered_products'].widget.attrs['class'] = 'form-select my-3'
+    self.fields['ordered_products'].widget.attrs['placeholder'] = 'Products'
+    self.fields['ordered_products'].label = ''
 
   class Meta:
     model = Order
